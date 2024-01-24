@@ -3,7 +3,7 @@ const http = require('http');
 
 const server = http.createServer((req, res) => {
   res.writeHead(200, { 'Content-Type': 'text/plain' });
-  res.end('Hello, World I Omer Abdullah From Swizerland I am Coming!\n');
+  res.end('Hello, World I Omer Abdullah From Swizerland I am Coming On the way!\n');
 });
 
 const port = 6000;
