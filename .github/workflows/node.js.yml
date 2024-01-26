@@ -41,12 +41,15 @@ jobs:
         docker push $DOCKER_USERNAME/nodeapp:latest
 
     - name: Connect to EC2 instance
-      uses: aws-actions/connect-to-ec2-user@v1
       with:
         instance-ids: ${{ steps.create-instance.outputs.i-0c7334250f0d833fa }}
+        with:
+    access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+    secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
-    - name: Install Docker on EC2  
-      run: |
+
+     - name: Install Docker on EC2  
+       run: |
         sudo yum update -y
         sudo yum install docker -y
         
