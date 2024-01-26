@@ -42,6 +42,8 @@ jobs:
 
     - name: Connect to EC2 instance
       with:
+        uses: aws-actions/connect-to-ec2-user@v1
+
         instance-ids: ${{ steps.create-instance.outputs.i-0c7334250f0d833fa }}
         with:
     access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
