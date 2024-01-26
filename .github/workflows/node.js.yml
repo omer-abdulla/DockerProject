@@ -43,7 +43,7 @@ jobs:
     - name: Connect to EC2 instance
       uses: aws-actions/connect-to-ec2-user@v1
       with:
-        instance-ids: ${{ steps.create-instance.outputs.instance-id }}
+        instance-ids: ${{ steps.create-instance.outputs.i-0c7334250f0d833fa }}
 
     - name: Install Docker on EC2  
       run: |
