@@ -50,12 +50,12 @@ jobs:
     secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
 
-     - name: Install Docker on EC2  
-       run: |
+     - name:Install Docker on EC2  
+       run:|
         sudo yum update -y
         sudo yum install docker -y
         
-    - name: Login to Docker Hub on EC2
+      - name:Login to Docker Hub on EC2 
       env:
         DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}  
         DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
