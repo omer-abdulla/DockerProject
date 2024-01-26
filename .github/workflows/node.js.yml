@@ -41,15 +41,6 @@ jobs:
         docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
         docker push $DOCKER_USERNAME/nodeapp:latest
 
-    - name: Create EC2 instance
-      uses: aws-actions/configure-aws-credentials@v1
-      with: 
-        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        aws-region: us-east-2
-      run: |
-        aws ec2 run-instances --image-id ami-0abcdef1234567 --instance-type t2.micro --key-name mykey --security-groups my-sg
-        
     - name: Connect to EC2 instance
       uses: aws-actions/connect-to-ec2-user@v1
       with:
