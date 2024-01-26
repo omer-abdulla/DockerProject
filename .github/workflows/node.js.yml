@@ -38,4 +38,4 @@ jobs:
       run: docker pull msdhoni:latest
 
     - name: Run Docker container
-      run: docker run -d -p 4500:4500 msdhoni:latest
+      run: docker run -p 4500:4500 msdhoni:latest
