@@ -10,20 +10,14 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: aws-actions/amazon-ec2-ssh@v1
-        with:
-          instance-ids: ${{ steps.create-instance.outputs.i-0c7334250f0d833fa }}
-          access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-
       - name: Checkout Repository
-        uses: actions/checkout@v1
+        uses: actions/checkout@v2
 
       - name: Create Node.app.js  
         run: |
           echo "console.log('Hello, World I Omer Abdullah From Switzerland I am Coming On the way to India')" > app.js
           npm install
-          
+
       - name: Create Dockerfile
         run: |  
           echo "FROM node:alpine\nCOPY . .\nCMD [\"node\", \"app.js\"]" > Dockerfile
@@ -35,22 +29,12 @@ jobs:
           git add .
           git commit -m "Initial commit"
           git push
-          
-      - name: Build and push image to Docker Hub
-        env:
-          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
-          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
-        run: |
-          docker build -t $DOCKER_USERNAME/nodeapp:latest .
-          docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD  
-          docker push $DOCKER_USERNAME/nodeapp:latest
 
-      - name: Connect to EC2 instance  
-        uses: aws-actions/amazon-ec2-ssh@v1
-        with:
-          instance-ids: ${{ steps.create-instance.outputs.i-0c7334250f0d833fa }}
-          access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      - name: Connect to EC2 instance
+        run: |
+          ssh-keyscan -H ${{ secrets.EC2_PUBLIC_IP }} >> ~/.ssh/known_hosts
+          chmod 600 ~/.ssh/id_rsa
+          ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no ec2-user@${{ secrets.EC2_PUBLIC_IP }} 'echo Successfully connected'
 
       - name: Install Docker on EC2
         run: |
