@@ -1,27 +1,31 @@
 name: Deploy Node.app.js
 
 on:
-  push: 
+  push:
     branches:
       - main
-          
-jobs:
 
+jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
+      - uses: aws-actions/amazon-ec2-ssh@v1
+        with:
+          instance-ids: ${{ steps.create-instance.outputs.i-0c7334250f0d833fa }}
+          access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
       - name: Checkout Repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v1
 
-      - name: Create Node.app.js
-        run: |  
+      - name: Create Node.app.js  
+        run: |
           echo "console.log('Hello, World I Omer Abdullah From Switzerland I am Coming On the way to India')" > app.js
           npm install
-
+          
       - name: Create Dockerfile
-        run: |
+        run: |  
           echo "FROM node:alpine\nCOPY . .\nCMD [\"node\", \"app.js\"]" > Dockerfile
 
       - name: Commit and push
@@ -31,32 +35,32 @@ jobs:
           git add .
           git commit -m "Initial commit"
           git push
-
+          
       - name: Build and push image to Docker Hub
         env:
           DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
-          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}  
+          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
         run: |
           docker build -t $DOCKER_USERNAME/nodeapp:latest .
-          docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
+          docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD  
           docker push $DOCKER_USERNAME/nodeapp:latest
 
-      - name: Connect to EC2 instance 
-        uses:  aws-action/aws-ec2-ssh@v1
+      - name: Connect to EC2 instance  
+        uses: aws-actions/amazon-ec2-ssh@v1
         with:
           instance-ids: ${{ steps.create-instance.outputs.i-0c7334250f0d833fa }}
           access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
       - name: Install Docker on EC2
-        run: |  
-          sudo yum update -y
+        run: |
+          sudo yum update -y 
           sudo yum install docker -y
 
       - name: Login to Docker Hub on EC2
         env:
           DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
-          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}  
         run: |
           docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
 
