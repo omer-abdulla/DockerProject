@@ -41,6 +41,7 @@ jobs:
           host: ${{ secrets.EC2_HOST }}
           username: ${{ secrets.EC2_USERNAME }}
           port: 22
+          key: ${{ secrets.EC2_PRIVATE_KEY }}
           debug: true
 
       - name: Install Docker on EC2
