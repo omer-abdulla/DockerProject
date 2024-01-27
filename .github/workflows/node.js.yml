@@ -1,67 +1,67 @@
-name: Deploy Node.app.js
+name: Deploy Node.app.js 
 
 on:
   push:
     branches:
       - main
-      
+
 jobs:
 
   build:
-
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout Repository
-      uses: actions/checkout@v2
+    
+      - name: Checkout Repository  
+        uses: actions/checkout@v2
 
-    - name: Create Node.app.js
-      run: |
-        echo "console.log('Hello, World I Omer Abdullah From Switzerland I am Coming On the way to India')" > app.js
-        npm install
-        
-    - name: Create Dockerfile
-      run: |
-        echo "FROM node:alpine\nCOPY . .\nCMD [\"node\", \"app.js\"]" > Dockerfile 
+      - name: Create Node.app.js
+        run: |
+          echo "console.log('Hello, World I Omer Abdullah From Switzerland I am Coming On the way to India')" > app.js
+          npm install
 
-    - name: Commit and push 
-      run: |
-        git config --global user.name 'Your Name'
-        git config --global user.email 'your@email.com'
-        git add .
-        git commit -m "Initial commit"
-        git push
-        
-    - name: Build and push image to Docker Hub
-      env:
-        DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
-        DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}  
-      run: |
-        docker build -t $DOCKER_USERNAME/nodeapp:latest .
-        docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
-        docker push $DOCKER_USERNAME/nodeapp:latest
+      - name: Create Dockerfile 
+        run: |
+          echo "FROM node:alpine\nCOPY . .\nCMD [\"node\", \"app.js\"]" > Dockerfile
 
-    - name: Connect to EC2 instance
-    - uses: amazon-web-services/ec2-@latest
-      with:
-        instance-ids: ${{ steps.create-instance.outputs.i-0c7334250f0d833fa }}
-        access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      - name: Commit and push
+        run: |
+          git config --global user.name 'Your Name'
+          git config --global user.email 'your@email.com'
+          git add .
+          git commit -m "Initial commit"
+          git push
 
-    - name: Install Docker on EC2  
-      run: |
-        sudo yum update -y
-        sudo yum install docker -y
+      - name: Build and push image to Docker Hub
+        env:
+          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}  
+          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+        run: |
+          docker build -t $DOCKER_USERNAME/nodeapp:latest .
+          docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
+          docker push $DOCKER_USERNAME/nodeapp:latest
 
-    - name: Login to Docker Hub on EC2
-      env:
-        DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
-        DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
-      run: |
-        docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
+      - name: Connect to EC2 instance
+         uses: amazon-web-services/aws-ec2-ssh@v1
+         with:
+           instance-ids: ${{ steps.create-instance.outputs.i-0c7334250f0d833fa }}
+           access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+           secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
-    - name: Pull image on EC2 
-      run: docker pull $DOCKER_USERNAME/nodeapp:latest
+      - name: Install Docker on EC2 
+        run: |
+           sudo yum update -y
+           sudo yum install docker -y
 
-    - name: Run container on EC2
-      run: docker run -d --name nodeapp $DOCKER_USERNAME/nodeapp:latest
+      name: Login to Docker Hub on EC2
+  env:
+    DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+    DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+  run: |
+    docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
+      
+- name: Pull image on EC2
+  run: docker pull $DOCKER_USERNAME/nodeapp:latest
+      
+- name: Run container on EC2
+  run: docker run -d --name nodeapp $DOCKER_USERNAME/nodeapp:latest
