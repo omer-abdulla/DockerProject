@@ -10,14 +10,26 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # ... (existing steps)
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 14
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build Docker image
+        run: docker build -t your-dockerhub-omer07/docker1098:latest .
 
       - name: Log in to Docker Hub
         run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
 
       - name: Push to Docker Hub
         run: |
-          docker push msdhoni-omer07/docker1098:latest || exit 0
+          docker push your-dockerhub-omer07/docker1098:latest || exit 0
 
   deploy:
     runs-on: ubuntu-latest
