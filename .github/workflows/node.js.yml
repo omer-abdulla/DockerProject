@@ -42,7 +42,7 @@ jobs:
         docker push $DOCKER_USERNAME/nodeapp:latest
 
     - name: Connect to EC2 instance
-    - uses: amazon-web-services/ec2-ssh@v1
+    - uses: amazon-web-services/ec2-@latest
       with:
         instance-ids: ${{ steps.create-instance.outputs.i-0c7334250f0d833fa }}
         access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
