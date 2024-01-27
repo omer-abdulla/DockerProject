@@ -30,6 +30,7 @@ jobs:
           host: ${{ secrets.EC2_HOST }}
           username: ${{ secrets.EC2_USERNAME }}
           key: ${{ secrets.EC2_PRIVATE_KEY }}
+          debug: true
 
       - name: Pull Docker image from Docker Hub on EC2 instance
         run: |
@@ -39,3 +40,4 @@ jobs:
       - name: Run Docker container on EC2 instance
         run: |
           docker run -d -p 4500:4500 your-dockerhub-omer07/docker1098:latest
+
