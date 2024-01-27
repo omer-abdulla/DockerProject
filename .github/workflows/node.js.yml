@@ -37,7 +37,13 @@ jobs:
     steps:
       - name: Set up EC2 Instance Connect
         uses: appleboy/ssh-action@master
-    
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USERNAME }}
+          key: ${{ secrets.EC2_PRIVATE_KEY }}
+          port: 22
+          debug: true
+
       - name: Install Docker on EC2
         run: |
           sudo apt-get update
