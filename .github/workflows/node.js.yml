@@ -31,14 +31,6 @@ jobs:
         run: |
           docker push your-dockerhub-omer07/docker1098:latest || exit 0
 
-  name: Deploy to EC2 with Docker
-
-on:
-  push:
-    branches:
-      - main
-
-jobs:
   deploy:
     runs-on: ubuntu-latest
 
