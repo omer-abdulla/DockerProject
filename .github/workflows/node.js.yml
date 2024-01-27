@@ -34,6 +34,9 @@ jobs:
 
       - name: Pull Docker image from Docker Hub on EC2 instance
         run: |
-          docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secret
+          docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
+          docker pull your-dockerhub-omer07/docker1098:latest
 
-
+      - name: Run Docker container on EC2 instance
+        run: |
+          docker run -d -p 4500:4500 your-dockerhub-omer07/docker1098:latest
