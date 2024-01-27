@@ -17,7 +17,7 @@ jobs:
 
       - name: Push to Docker Hub
         run: |
-          docker push your-dockerhub-omer07/docker1098:latest || exit 0
+          docker push msdhoni-omer07/docker1098:latest || exit 0
 
   deploy:
     runs-on: ubuntu-latest
