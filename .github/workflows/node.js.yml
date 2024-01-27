@@ -56,3 +56,10 @@ jobs:
 
       - name: Run container on EC2
         run: docker run -d --name nodeapp $DOCKER_USERNAME/nodeapp
+
+      - name: My Step
+        run: |
+          set -x
+          # Your additional debugging commands here
+          echo "Debugging step: Hello from My Step"
+
