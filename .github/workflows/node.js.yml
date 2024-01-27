@@ -31,26 +31,17 @@ jobs:
         run: |
           docker push your-dockerhub-omer07/docker1098:latest || exit 0
 
- name: Deploy to EC2 with Docker
-
-on:
-  push:
-    branches:
-      - main
-
-jobs:
   deploy:
     runs-on: ubuntu-latest
 
     steps:
       - name: Set up SSH connection to EC2 instance
-        uses: i-0831ccf57b92f7c57-action@master
+        uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.EC2_HOST }}
           username: ${{ secrets.EC2_USERNAME }}
           port: 22
           debug: true
-
 
       - name: Install Docker on EC2
         run: |
@@ -68,3 +59,4 @@ jobs:
       - name: Run Docker container on EC2
         run: |
           docker run -d -p 4500:4500 your-dockerhub-omer07/your-docker-image:latest
+
