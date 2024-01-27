@@ -31,15 +31,26 @@ jobs:
         run: |
           docker push your-dockerhub-omer07/docker1098:latest || exit 0
 
+ name: Deploy to EC2 with Docker
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
   deploy:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Set up EC2 Instance Connect
-        uses: aws/setup-ec2-instance-connect@v1
+      - name: Set up SSH connection to EC2 instance
+        uses: i-0831ccf57b92f7c57-action@master
         with:
-          instance-id: ${{ secrets.EC2_INSTANCE_ID }}
-          ssh-public-key: ${{ secrets.EC2_SSH_PUBLIC_KEY }}
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USERNAME }}
+          port: 22
+          debug: true
+
 
       - name: Install Docker on EC2
         run: |
