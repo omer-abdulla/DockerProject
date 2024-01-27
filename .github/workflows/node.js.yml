@@ -31,6 +31,14 @@ jobs:
         run: |
           docker push your-dockerhub-omer07/docker1098:latest || exit 0
 
+  name: Deploy to EC2 with Docker
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
   deploy:
     runs-on: ubuntu-latest
 
@@ -52,8 +60,8 @@ jobs:
 
       - name: Pull Docker image on EC2
         run: |
-          docker pull your-dockerhub-omer07/docker1098:latest
+          docker pull your-dockerhub-omer07/your-docker-image:latest
 
       - name: Run Docker container on EC2
         run: |
-          docker run -d -p 4500:4500 your-dockerhub-omer07/docker1098:latest
+          docker run -d -p 4500:4500 your-dockerhub-omer07/your-docker-image:latest
