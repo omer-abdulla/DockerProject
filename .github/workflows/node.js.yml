@@ -13,19 +13,22 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v2
 
-      - name: Create Node.app.js  
+      - name: Set up Git
+        run: |
+          git config --global user.name 'Your Name'
+          git config --global user.email 'your@email.com'
+
+      - name: Create Node.app.js
         run: |
           echo "console.log('Hello, World I Omer Abdullah From Switzerland I am Coming On the way to India')" > app.js
           npm install
 
       - name: Create Dockerfile
-        run: |  
+        run: |
           echo "FROM node:alpine\nCOPY . .\nCMD [\"node\", \"app.js\"]" > Dockerfile
 
-      - name: Commit and push
+      - name: Commit and Push Changes
         run: |
-          git config --global user.name 'Your Name'
-          git config --global user.email 'your@email.com'
           git add .
           git commit -m "Initial commit"
           git push
