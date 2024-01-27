@@ -22,7 +22,7 @@ jobs:
         run: npm install
 
       - name: Build Docker image
-        run: docker build -t your-dockerhub-username/docker1098:latest .
+        run: docker build -t your-dockerhub-omer07/docker1098:latest .
 
       - name: Log in to Docker Hub
         run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
