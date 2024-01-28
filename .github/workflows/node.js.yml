@@ -67,9 +67,9 @@ jobs:
 
       - name: Pull Docker image on EC2
         run: |
-          docker pull your-dockerhub-omer07/dockerhub07:latest
+          docker pull omer07/dockerhub07:1
 
       - name: Run Docker container on EC2
         run: |
-          docker run -d -p 4500:4500 your-dockerhub-omer07/dockerhub07:latest
+          docker run -d -p 4500:4500 your-dockerhub-omer07/dockerhub07:l
 
