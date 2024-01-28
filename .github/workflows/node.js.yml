@@ -67,10 +67,10 @@ jobs:
 
       - name: Pull Docker image on EC2
         run: |
-          docker pull omer07/docker1098:1
+          docker pull omer07/docker1098:2
 
       - name: Run Docker container on EC2
         run: |
-          docker run -d -p 4500:4500 --env EC2_PUBLIC_IP=18.188.226.16 omer07/docker1098:1
+          docker run -d -p 4500:4500 --env EC2_PUBLIC_IP=18.188.226.16 omer07/docker1098:2
 
 
