@@ -63,12 +63,4 @@ jobs:
 
       - name: Log in to Docker Hub on EC2
         run: |
-          docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
-
-      - name: Pull Docker image on EC2
-        run: |
-          docker pull omer07/dockerhub07:1
-
-      - name: Run Docker container on EC2
-        run: |
-          docker run -d -p 4500:4500 --env EC2_PUBLIC_IP=18.188.226.16 omer07/dockerhub07:1
+          docker login -
