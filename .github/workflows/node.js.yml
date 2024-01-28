@@ -29,7 +29,7 @@ jobs:
 
       - name: Push to Docker Hub
         run: |
-          docker push your-dockerhub-omer07/docker1098:latest || exit 0
+          docker push your-dockerhub-omer07/docker1098:1 || exit 0
 
   deploy:
     runs-on: ubuntu-latest
@@ -67,10 +67,10 @@ jobs:
 
       - name: Pull Docker image on EC2
         run: |
-          docker pull omer07/docker1098:2
+          docker pull omer07/docker1098:1
 
       - name: Run Docker container on EC2
         run: |
-          docker run -d -p 4500:4500 --env EC2_PUBLIC_IP=18.188.226.16 omer07/docker1098:2
+          docker run -d -p 4500:4500 --env EC2_PUBLIC_IP=18.188.226.16 omer07/docker1098:1
 
 
