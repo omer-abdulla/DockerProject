@@ -22,7 +22,7 @@ jobs:
         run: npm install
 
       - name: Build Docker image
-        run: docker build -t your-dockerhub-omer07/dockerhub07:latest .
+        run: docker build -t your-dockerhub-omer07/dockerhub:latest .
 
       - name: Log in to Docker Hub
         run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
@@ -70,11 +70,11 @@ jobs:
 
       - name: Pull Docker image on EC2
         run: |
-          docker pull your-dockerhub-omer07/dockerhub07:1 || exit 0  # Use the correct image tag
+          docker pull your-dockerhub-omer07/dockerhub:1 || exit 0  # Use the correct image tag
 
       - name: Debug Docker image
         run: docker images
 
       - name: Run Docker container on EC2
         run: |
-          docker run -d -p 6500:6500 your-dockerhub-omer07/dockerhub07:1 || exit 0  # Use the correct image tag
+          docker run -d -p 6500:6500 your-dockerhub-omer07/dockerhub:1 || exit 0  # Use the correct image tag
