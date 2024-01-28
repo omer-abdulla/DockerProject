@@ -1,24 +1,80 @@
-name: Publish Docker Image to Docker Hub
+name: Build and Push Docker Image
 
 on:
   push:
-    branches: ['main']
+    branches:
+      - main
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 14
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build Docker image
+        run: docker build -t your-dockerhub-omer07/dockerhub07:latest .
 
       - name: Log in to Docker Hub
-        uses: docker/login-action@f054a8b539a109f9f41c372932f1ae047eff08c9
-        with:
-          username: ${{ secrets.DOCKER_USERNAME }}
-          password: ${{ secrets.DOCKER_PASSWORD }}
+        run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
 
-      - name: Build the Docker image
-        run: docker build . --file Dockerfile --tag ${{ secrets.DOCKER_USERNAME }}/dockerhub1
+      - name: Push to Docker Hub
+        run: |
+          docker push your-dockerhub-omer07/dockerhub07:latest || exit 0
 
-      - name: Docker Push
-        run: docker push ${{ secrets.DOCKER_USERNAME }}/dockerhub1
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Update and upgrade packages on EC2
+        run: |
+          sudo apt-get update
+          sudo apt-get upgrade -y
+
+      - name: Remove conflicting Docker packages (if any)
+        run: |
+          sudo apt-get remove docker docker-engine docker.io containerd runc
+
+      - name: Install Docker dependencies
+        run: |
+          sudo apt-get install -y apt-transport-https ca-certificates curl software-properties-common
+
+      - name: Add Docker GPG key
+        run: |
+          curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
+
+      - name: Set up stable Docker repository
+        run: |
+          echo "deb [arch=amd64 signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+
+      - name: Install Docker on EC2
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y docker-ce docker-ce-cli containerd.io
+
+      - name: Log in to Docker Hub on EC2
+        run: |
+          docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Debug Docker
+        run: docker info
+
+      - name: Pull Docker image on EC2
+        run: |
+          docker pull your-dockerhub-omer07/dockerhub07:1 || exit 0  # Use the correct image tag
+
+      - name: Debug Docker image
+        run: docker images
+
+      - name: Run Docker container on EC2
+        run: |
+          docker run -d -p 4500:4500 your-dockerhub-omer07/dockerhub07:1 || exit 0  # Use the correct image tag
