@@ -30,7 +30,6 @@ jobs:
       - name: Push to Docker Hub
         run: |
           docker push your-dockerhub-omer07/docker1098:latest || exit 0
-
   deploy:
     runs-on: ubuntu-latest
 
@@ -39,38 +38,28 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get upgrade -y
-
       - name: Remove conflicting Docker packages (if any)
         run: |
           sudo apt-get remove docker docker-engine docker.io containerd runc
-
       - name: Install Docker dependencies
         run: |
           sudo apt-get install -y apt-transport-https ca-certificates curl software-properties-common
-
       - name: Add Docker GPG key
         run: |
           curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
-
       - name: Set up stable Docker repository
         run: |
           echo "deb [arch=amd64 signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
-
       - name: Install Docker on EC2
         run: |
           sudo apt-get update
           sudo apt-get install -y docker-ce docker-ce-cli containerd.io
-
       - name: Log in to Docker Hub on EC2
         run: |
           docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
-
       - name: Pull Docker image on EC2
         run: |
           docker pull omer07/docker1098:1
-
       - name: Run Docker container on EC2
         run: |
           docker run -d -p 4500:4500 --env EC2_PUBLIC_IP=18.188.226.16 omer07/docker1098:1
-
-
