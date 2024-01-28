@@ -63,3 +63,4 @@ jobs:
       - name: Run Docker container on EC2
         run: |
           docker run -d -p 4500:4500 omer07/docker1098:1
+          EC2_PUBLIC_IP=18.188.226.16 omer07/docker1098:1
