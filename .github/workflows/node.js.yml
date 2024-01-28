@@ -35,15 +35,6 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Set up SSH connection to EC2 instance
-        uses: appleboy/ssh-action@master
-        with:
-          host: ${{ secrets.EC2_HOST }}
-          username: ${{ secrets.EC2_USERNAME }}
-          port: 22
-          key: ${{ secrets.EC2_PRIVATE_KEY }}
-          debug: true
-
       - name: Install Docker on EC2
         run: |
           sudo apt-get update
