@@ -35,9 +35,13 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Install Docker on EC2
+      - name: Update and upgrade packages on EC2
         run: |
           sudo apt-get update
+          sudo apt-get upgrade -y
+
+      - name: Install Docker on EC2
+        run: |
           sudo apt-get install -y docker.io
 
       - name: Log in to Docker Hub on EC2
