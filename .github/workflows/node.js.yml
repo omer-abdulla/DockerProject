@@ -71,4 +71,4 @@ jobs:
 
       - name: Run Docker container on EC2
         run: |
-          docker run -d -p 4500:4500 your-dockerhub-omer07/docker1098:1
+          docker run-p 4500:4500 omer07/docker1098:1
