@@ -77,4 +77,4 @@ jobs:
 
       - name: Run Docker container on EC2
         run: |
-          docker run -d -p 4500:4500 your-dockerhub-omer07/dockerhub07:1 || exit 0  # Use the correct image tag
+          docker run -d -p 6500:6500 your-dockerhub-omer07/dockerhub07:1 || exit 0  # Use the correct image tag
