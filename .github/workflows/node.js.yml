@@ -33,17 +33,17 @@ build:
     - docker push $REPOSITORY_URL/$ECR_REPO:$IMAGE_TAG
   only:
     - main
+
 deploy:
   stage: deploy
-  before_script:
+   before_script:
     - mkdir -p ~/.ssh
     - echo "$SSH_PUBLIC_KEY" | tr -d '\r' > ~/.ssh/id_rsa 
     - chmod 600 ~/.ssh/id_rsa
     - apk add openssh # Install ssh 
     - eval $(ssh-agent -s)
     - ssh-add ~/.ssh/id_rsa
-
-     script:
+   script:
     - ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no $EC2_USER@$EC2_INSTANCE_IP "docker stop virat-kholi || true && docker rm virat-kholi || true"
     - ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no $EC2_USER@$EC2_INSTANCE_IP "aws ecr get-login-password --region ${REGION} | docker login --username AWS --password-stdin $REPOSITORY_URL"
     - ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no $EC2_USER@$EC2_INSTANCE_IP "docker pull $REPOSITORY_URL/$ECR_REPO:latest"
