@@ -1,50 +1,29 @@
-image: docker:latest
+name: CICD
 
- variables:
-  REPOSITORY_URL: $AWS_ACCOUNT_ID.dkr.ecr.us-east-2.amazonaws.com
-  REGION: us-east-2
-  DOCKER_HOST: tcp://docker:7500
-  DOCKER_DRIVER: overlay2
-  DOCKER_TLS_CERTDIR: ""
-  IMAGE_TAG: $CI_PIPELINE_IID
-  VIRTUAL_ENV: "/path/to/venv"
+on:
+  push:
+    branches: [cicd-docker-ec2]
 
- services:
-  - docker:dind
-
- before_script:
-  - apk add nodejs npm
-  - npm install -g aws-cli
-  - aws ecr get-login-password --region "${REGION}" | docker login --username AWS --password-stdin "${ECR_REGISTRY}"
-
- stages:
-  - build
-  - deploy
-
- build:
- stage: build
- script:
-    - echo "Building image..."
-    - docker build -t $REPOSITORY_URL/$ECR_REPO:latest .
-    - echo "Tagging image..."
-    - docker tag $REPOSITORY_URL/$ECR_REPO:latest $REPOSITORY_URL/$ECR_REPO:$IMAGE_TAG
-    - echo "Pushing image..."
-    - docker push $REPOSITORY_URL/$ECR_REPO:latest
-    - docker push $REPOSITORY_URL/$ECR_REPO:$IMAGE_TAG
- only:
-    - main
-
- deploy:
-  stage: deploy
-  before_script:
-    - mkdir -p ~/.ssh
-    - echo "$SSH_PUBLIC_KEY" | tr -d '\r' > ~/.ssh/id_rsa 
-    - chmod 600 ~/.ssh/id_rsa
-    - apk add openssh # Install ssh 
-    - eval $(ssh-agent -s)
-    - ssh-add ~/.ssh/id_rsa
-  script: 
-    - ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no $EC2_USER@$EC2_INSTANCE_IP "docker stop virat-kholi || true && docker rm virat-kholi || true"
-    - ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no $EC2_USER@$EC2_INSTANCE_IP "aws ecr get-login-password --region ${REGION} | docker login --username AWS --password-stdin $REPOSITORY_URL"
-    - ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no $EC2_USER@$EC2_INSTANCE_IP "docker pull $REPOSITORY_URL/$ECR_REPO:latest"
-    - ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no $EC2_USER@$EC2_INSTANCE_IP "docker run -d -p 7500:7500 --name virat-kholi $REPOSITORY_URL/$ECR_REPO"
+jobs:
+  build:
+    runs-on: [ubuntu-latest]
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v3
+      - name: Login to docker hub
+        run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }} 
+      - name: Build docker image
+        run: docker build -t integrationninjas/nodejs-app .
+      - name: Publish image to docker hub
+        run: docker push integrationninjas/nodejs-app:latest
+        
+  deploy:
+    needs: build
+    runs-on: [aws-ec2]
+    steps:
+      - name: Pull image from docker hub
+        run: docker pull integrationninjas/nodejs-app:latest
+      - name: Delete old container
+        run: docker rm -f nodejs-app-container
+      - name: Run docker container
+        run: docker run -d -p 7500:7500 --name nodejs-app-container integrationninjas/nodejs-app
