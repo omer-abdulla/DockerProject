@@ -1,8 +1,6 @@
-name: CICD
-
 on:
   push:
-    branches: [cicd-docker-ec2]
+    branches: [main]
 
 jobs:
   build:
@@ -13,17 +11,17 @@ jobs:
       - name: Login to docker hub
         run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }} 
       - name: Build docker image
-        run: docker build -t integrationninjas/nodejs-app .
+        run: docker build -t omer07/dockerhub .
       - name: Publish image to docker hub
-        run: docker push integrationninjas/nodejs-app:latest
+        run: docker push omer07/dockerhub:latest
         
   deploy:
     needs: build
     runs-on: [aws-ec2]
     steps:
       - name: Pull image from docker hub
-        run: docker pull integrationninjas/nodejs-app:latest
+        run: docker pull omer07/dockerhub:latest
       - name: Delete old container
-        run: docker rm -f nodejs-app-container
+        run: docker rm -f dockerhub-container
       - name: Run docker container
-        run: docker run -d -p 7500:7500 --name nodejs-app-container integrationninjas/nodejs-app
+        run: docker run -d -p 7500:7500 --name dockerhub-container/dockerhub omer07
