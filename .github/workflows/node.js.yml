@@ -24,4 +24,4 @@ jobs:
       - name: Delete old container
         run: docker rm -f dockerhub-container
       - name: Run docker container
-        run: docker run -d -p 7500:7500 --name dockerhub-container/dockerhub omer07
+        run: docker run -d -p 7500:7500 --name dockerhub-container omer07/dockerhub
