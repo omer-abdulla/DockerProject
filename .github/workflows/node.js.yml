@@ -19,7 +19,7 @@ jobs:
         
   deploy:
     needs: build
-    runs-on: [aws-ec2]
+    runs-on: [omer-insatance]
     steps:
       - name: Pull image from docker hub
         run: docker pull integrationninjas/nodejs-app:latest
