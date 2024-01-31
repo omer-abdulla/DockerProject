@@ -26,4 +26,4 @@ jobs:
       - name: Delete old container
         run: docker rm -f nodejs-app-container
       - name: Run docker container
-        run: docker run -d -p 6500:6500 --name nodejs-app-container integrationninjas/nodejs-app
+        run: docker run -d -p 7500:7500 --name nodejs-app-container integrationninjas/nodejs-app
