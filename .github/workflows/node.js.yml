@@ -11,17 +11,17 @@ jobs:
       - name: Login to docker hub
         run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }} 
       - name: Build docker image
-        run: docker build -t omer07/devopshub .
+        run: docker build -t omer07/myhub .
       - name: Publish image to docker hub
-        run: docker push omer07/devopshub:latest
+        run: docker push omer07/myhub:latest
         
   deploy:
     needs: build
     runs-on: [aws-ec2]
     steps:
       - name: Pull image from docker hub
-        run: docker pull omer07/devopshub:latest
+        run: docker pull omer07/myhub:latest
       - name: Delete old container
-        run: docker rm -f devopshub-container
+        run: docker rm -f myhubhub-container
       - name: Run docker container
-        run: docker run -d -p 7500:7500 --name devopshub-container omer07/devopshub
+        run: docker run -d -p 5000:5000 --name myhub-container omer07/myhub
