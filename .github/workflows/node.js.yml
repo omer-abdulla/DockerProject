@@ -1,71 +1,29 @@
-name: Build and Push Docker Image
+name: CICD
 
 on:
   push:
-    branches:
-      - main
+    branches: [cicd-docker-ec2]
 
 jobs:
   build:
-    runs-on: ubuntu-latest
-
+    runs-on: [ubuntu-latest]
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
-
-      - name: Set up Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: 14
-
-      - name: Install dependencies
-        run: npm install
-
-      - name: Build Docker image
-        run: docker build -t your-dockerhub-omer07/dockerhub:latest .
-
-      - name: Log in to Docker Hub
-        run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
-
-      - name: Push to Docker Hub
-        run: |
-          docker push your-dockerhub-omer07/dockerhub07:latest || exit 0
+      - name: Checkout source
+        uses: actions/checkout@v3
+      - name: Login to docker hub
+        run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }} 
+      - name: Build docker image
+        run: docker build -t integrationninjas/nodejs-app .
+      - name: Publish image to docker hub
+        run: docker push integrationninjas/nodejs-app:latest
+        
   deploy:
-    runs-on: ubuntu-latest
-
+    needs: build
+    runs-on: [aws-ec2]
     steps:
-      - name: Update and upgrade packages on EC2
-        run: |
-          sudo apt-get update
-          sudo apt-get upgrade -y
-      - name: Remove conflicting Docker packages (if any)
-        run: |
-          sudo apt-get remove docker docker-engine docker.io containerd runc
-      - name: Install Docker dependencies
-        run: |
-          sudo apt-get install -y apt-transport-https ca-certificates curl software-properties-common
-      - name: Add Docker GPG key
-        run: |
-          curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
-      - name: Set up stable Docker repository
-        run: |
-          echo "deb [arch=amd64 signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
-      - name: Install Docker on EC2
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y docker-ce docker-ce-cli containerd.io
-      - name: Log in to Docker Hub on EC2
-        run: |
-          docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
-      - name: Debug Docker
-        run: docker info
-
-      - name: Pull Docker image on EC2
-        run: |
-          docker pull your-dockerhub-omer07/dockerhub:1 || exit 0  # Use the correct image tag
-      - name: Debug Docker image
-        run: docker images
-
-      - name: Run Docker container on EC2
-        run: |
-          docker run -d -p 6500:6500 your-dockerhub-omer07/dockerhub:1 || exit 0  # Use the correct image tag
+      - name: Pull image from docker hub
+        run: docker pull integrationninjas/nodejs-app:latest
+      - name: Delete old container
+        run: docker rm -f nodejs-app-container
+      - name: Run docker container
+        run: docker run -d -p 6500:6500 --name nodejs-app-container integrationninjas/nodejs-app
