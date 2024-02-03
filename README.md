@@ -75,11 +75,11 @@ package lock.json
   }
 }
 
-7. Create a new repository in your GitHub account.
+4. Create a new repository in your GitHub account.
 
-   i am creating a new reposirotoy called named as DockerProject
+   I am creating a new reposirotoy called named as DockerProject
 
-9. Push your code to the GitHub repository.
+5. Push your code to the GitHub repository.
 
   After that i am pushing mt code into github repository these are the following  commands to push my code in github repsitory
 
@@ -91,25 +91,27 @@ package lock.json
 
   it will automatically push to the particular repository 
   
-10. Build the Docker image from the Dockerfile.
+6. Build the Docker image from the Dockerfile.
    after that i am buiding a docker image
    dockek build -t image name .
 
-12. Run the Docker container to ensure it is working correctly.
+7. Run the Docker container to ensure it is working correctly.
 
   after build i am will run my docker it will creating on docker container 
   docker run -p 5000:5000 image name:latest
   
-13. Create a new repository in Docker Hub.
+8. Create a new repository in Docker Hub.
+   
      i am creating a new dcoker hub repository called dockerhub
     
-15. Push the Docker image to Docker Hub.
+9 . Push the Docker image to Docker Hub
 
-16.  After that i will push my code into docker hub repository
+    docker tag image name:latest dockerhub username/repository:1
 
-17.  docker tag image name:latest dockerhub username/repository:1
-18.  
-19. Create a YAML file for GitHub Actions that builds and deploys the application.
+    docker push dockerhub user name/repositoryname:1
+    After it will automatically push my code into docker hub repository
+     
+10. Create a YAML file for GitHub Actions that builds and deploys the application.
 
   on:
   push:
@@ -139,15 +141,16 @@ jobs:
       - name: Run docker container
         run: docker run -d -p 5000:5000 --name myhub-container omer07/myhub
     
-21. Create an EC2 instance on AWS.
+11. Create an EC2 instance on AWS.
     Login to aws console and creating an ec2 instace and named as Omer instance profile and  connect the instance through ec2 instance connect
-23. Install Docker on the EC2 instance.
-    
-    sudo yum install docker it will aytomatically install docker on ec2
+12. Install Docker on the EC2 instance.
 
-25. Configure the EC2 instance security settings and port number.
+      sudo yum install docker it will aytomatically install docker on ec2
+
+13. Configure the EC2 instance security settings and port number.
     After the configure the ec2 security setting credencials add the port will number 5000 with custom
-27. Connect the GitHub Actions runner to the EC2 instance.
+    
+14. Connect the GitHub Actions runner to the EC2 instance.
     # Create a folder
     $ mkdir actions-runner && cd actions-runner
     # Download the latest runner package
@@ -158,7 +161,8 @@ jobs:
     $ ./config.sh --url https://github.com/omer-abdulla/DockerProject --token AXOGNHEUJI7HU3TBJ5TZ3J3FXZ3RO
     # Last step, run it!
     $ ./run.sh
-29. Run the application on the EC2 instance using the IP address and port number
+    
+15. Run the application on the EC2 instance using the IP address and port number
 
      Finally you will execute the ec2 instance ip address:port number will be shown the output
 
