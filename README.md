@@ -1,3 +1,58 @@
+ARCHITECTURE DIGRAM 
+
+                  ┌──────────────────────┐
+                  │                      │
+                  │     GitHub Repo      │ 
+                  │                      │
+                  └─────────────┬────────┘
+                               │
+               ┌───────────────┴──────────────   ┐
+               │                                 │
+               │     GitHub Actions Workflow     │
+               │                                 │
+               └─────────────────┬───────────────┘
+                                 │
+                                 │
+               ┌─────────────────┴────────┐
+               │                          │ 
+               │      Docker Hub          │
+               │                          │    
+               └────────────┬───────────  ┘
+                           │
+                           │
+               ┌───────────┴────────┐
+               │                    │
+               │     AWS EC2        │
+               │     Instance       │
+               │                    │
+               └─────────┬────────  ┘
+                         │
+                         │
+               ┌─────────┴────────┐ 
+               │                  │
+               │  Node App in     │
+               │   Docker         │
+               │   Container      │
+               │                  │
+               └───────────────  ─┘
+
+Basic directory structure
+
+ |---. github/workflow 
+ |----Dockerfile
+ |---- app.js
+ |----Pacakge.json
+ |----package lovk.json
+
+
+Make the flask application run locally using python app.js Tested the root  from the browser and got the expected response
+
+
+
+![Screenshot (14)](https://github.com/omer-abdulla/DockerProject/assets/98330268/abfebea0-df24-4123-84c0-ba3b3d05c83d)
+
+
+
 # DevOps Project Readme
 
 This project is a simple Node.js application that uses Docker, GitHub, Docker Hub, and AWS EC2. The goal of this project is to create a fully automated 
