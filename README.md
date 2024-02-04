@@ -47,10 +47,7 @@ Basic directory structure
 
 Make the flask application run locally using python app.js Tested the root  from the browser and got the expected response
 
-
-
-![Screenshot (14)](https://github.com/omer-abdulla/DockerProject/assets/98330268/abfebea0-df24-4123-84c0-ba3b3d05c83d)
-
+![package-lock json - PROJECT 1 - Visual Studio Code  Administrator  04-02-2024 15_51_45](https://github.com/omer-abdulla/DockerProject/assets/98330268/0c119e97-92e8-47e2-8cfb-742242e057a9)
 
 
 # DevOps Project Readme
