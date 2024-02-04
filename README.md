@@ -118,8 +118,7 @@ jobs:
     
 
 
-      ![Actions secrets · omer-abdulla_DockerProject - Google Chrome 04-02-2024 16_01_06](https://github.com/omer-abdulla/DockerProject/assets/98330268/d49b7148-2cde- 
-      445f-bde1-601f4f6acc4e)
+      ![Actions secrets · omer-abdulla_DockerProject - Google Chrome 04-02-2024 16_01_06](https://github.com/omer-abdulla/DockerProject/assets/98330268/388c5004-901e-423d-bb8e-83cc497083aa)
 
 
     7. Final Output
