@@ -114,9 +114,12 @@ jobs:
       - name: Run docker container
         run: docker run -d -p 5000:5000 --name myhub-container omer07/myhub
 
-    6. Make sure to add the variables In Settings -> CICD -> Variables
+    6. Make sure to add the variables In Settings -> CICD -> Variables.
+    
 
-     ![Actions secrets · omer-abdulla_DockerProject - Google Chrome 04-02-2024 16_01_06](https://github.com/omer-abdulla/DockerProject/assets/98330268/40f5b279-019e-4282-b7e5-175d67a98996)
+
+      ![Actions secrets · omer-abdulla_DockerProject - Google Chrome 04-02-2024 16_01_06](https://github.com/omer-abdulla/DockerProject/assets/98330268/d49b7148-2cde- 
+      445f-bde1-601f4f6acc4e)
 
 
     7. Final Output
