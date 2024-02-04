@@ -1,4 +1,4 @@
-ARCHITECTURE DIGRAM 
+1. ARCHITECTURE DIGRAM 
 
                   ┌──────────────────────┐
                   │                      │
@@ -36,7 +36,7 @@ ARCHITECTURE DIGRAM
                │                  │
                └───────────────  ─┘
 
-Basic directory structure
+2. Basic directory structure
 
        
  |---. github/workflow 
@@ -46,12 +46,12 @@ Basic directory structure
  |----package lock.json
 
 
-Make the flask application run locally using python app.js Tested the root  from the browser and got the expected response
+3. Make the flask application run locally using python app.js Tested the root  from the browser and got the expected response
 
 ![package-lock json - PROJECT 1 - Visual Studio Code  Administrator  04-02-2024 15_51_45](https://github.com/omer-abdulla/DockerProject/assets/98330268/0c119e97-92e8-47e2-8cfb-742242e057a9)
 
 
-Dockerization: Dockerize the Python application
+4. Dockerization: Dockerize the Python application
 
 Dockerfile is used to create a docker container and consists of 
 
@@ -80,7 +80,7 @@ CMD ["node", "app.js"]
 
 This Dockerfile starts by specifying that the base image is node:14, which pulls the official Node.js version 14 image from Docker Hub. It sets the working directory to /usr/src/app inside the container. Then it copies over just the package.json and package-lock.json files first. This allows npm to install the dependencies defined in package.json without needing the actual application code yet. Next it runs npm install which will download and install the dependencies. After the dependencies are installed, the Dockerfile copies over the application source code into the container's working directory. This separation of dependency installation and source code copy optimizes the build process by allowing caching of the dependencies. The Dockerfile exposes port 5000 which is the port the Node.js application will listen on. Finally, the Dockerfile defines the command to run when a container is launched from the built image. It will run node app.js to launch the Node.js application. This Dockerfile contains best practices like only copying essential files for each stage of the build process to optimize caching and performance. Let me know if this helps explain what each step of the Dockerfile is doing to containerize the Node.js application!
 
-CI/CD Implementation: Implement a Continuous Integration/Continuous Deployment (CI/CD) pipeline using Gitlab CI/CD.
+5 .CI/CD Implementation: Implement a Continuous Integration/Continuous Deployment (CI/CD) pipeline using Gitlab CI/CD.
 
 
 CI/CD configuration automates the building and deployment of a Docker image. The image is built, tagged, and pushed to AWS ECR in the 'build' stage. In the 'deploy' stage, it connects to an EC2 instance, pulls the latest image, and runs a Docker container.
@@ -114,10 +114,9 @@ jobs:
       - name: Run docker container
         run: docker run -d -p 5000:5000 --name myhub-container omer07/myhub
 
-    Make sure to add the variables In Settings -> CICD -> Variables
+    6. Make sure to add the variables In Settings -> CICD -> Variables
     
-    ![Actions secrets · omer-abdulla_DockerProject - Google Chrome 04-02-2024 16_01_06](https://github.com/omer-abdulla/DockerProject/assets/98330268/3845873c-1609- 
-     44d5-a81f-300078d79afe)
+    ![Actions secrets · omer-abdulla_DockerProject - Google Chrome 04-02-2024 16_01_06](https://github.com/omer-abdulla/DockerProject/assets/98330268/8cdff1d8-7fe3-4864-bd67-18ee2ccfd8f0)
 
 
     Final Output
