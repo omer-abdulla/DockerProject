@@ -117,9 +117,7 @@ jobs:
     6. Make sure to add the variables In Settings -> CICD -> Variables.
     
 
-
-      ![Actions secrets · omer-abdulla_DockerProject - Google Chrome 04-02-2024 16_01_06](https://github.com/omer-abdulla/DockerProject/assets/98330268/388c5004-901e-423d-bb8e-83cc497083aa)
-
+    ![Actions secrets · omer-abdulla_DockerProject - Google Chrome 04-02-2024 16_01_06](https://github.com/omer- abdulla/DockerProject/assets/98330268/ed32264c-2a5d-4308-971d-72885d6909d4)
 
     7. Final Output
     
