@@ -116,7 +116,8 @@ jobs:
 
     6. Make sure to add the variables In Settings -> CICD -> Variables
     
-    [Uploading Actions secrets · omer-abdulla_DockerProject - Google Chrome 04-02-2024 16_01_06.png…]()
+   ![Actions secrets · omer-abdulla_DockerProject - Google Chrome 04-02-2024 16_01_06](https://github.com/omer-abdulla/DockerProject/assets/98330268/cf07d5fa-8b50- 
+   418c-b073-d239f31190f0)
 
     Final Output
 
